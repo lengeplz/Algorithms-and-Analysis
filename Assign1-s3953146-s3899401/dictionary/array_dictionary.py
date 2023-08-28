@@ -14,7 +14,7 @@ import bisect
 class ArrayDictionary(BaseDictionary):
 
     def __init__(self):
-        # TO BE IMPLEMENTED
+        self.dictionary_data = []
         pass
 
 
@@ -23,7 +23,9 @@ class ArrayDictionary(BaseDictionary):
         construct the data structure to store nodes
         @param words_frequencies: list of (word, frequency) to be stored
         """
+
         # TO BE IMPLEMENTED
+        self.dictionary_data = words_frequencies
 
 
     def search(self, word: str) -> int:
@@ -33,6 +35,9 @@ class ArrayDictionary(BaseDictionary):
         @return: frequency > 0 if found and 0 if NOT found
         """
         # TO BE IMPLEMENTED
+        for entry in self.dictionary_data:
+            if entry.word == word:
+                return entry.frequency
 
         return 0
 
@@ -43,6 +48,9 @@ class ArrayDictionary(BaseDictionary):
         :return: True whether succeeded, False when word is already in the dictionary
         """
         # TO BE IMPLEMENTED
+        if not any(entry.word == word_frequency.word for entry in self.dictionary_data):
+            self.dictionary_data.append(word_frequency)
+            return True
 
         return False
 
@@ -54,6 +62,10 @@ class ArrayDictionary(BaseDictionary):
         """
         # find the position of 'word' in the list, if exists, will be at idx-1
         # TO BE IMPLEMENTED
+        for entry in self.dictionary_data:
+            if entry.word == word:
+                self.dictionary_data.remove(entry)
+                return True
 
         return False
 
@@ -64,4 +76,6 @@ class ArrayDictionary(BaseDictionary):
         @param prefix_word: word to be autocompleted
         @return: a list (could be empty) of (at most) 3 most-frequent words with prefix 'prefix_word'
         """
-        return []
+        matching_words = [entry for entry in self.dictionary_data if entry.word.startswith(prefix_word)]
+        matching_words.sort(key=lambda entry: entry.frequency, reverse=True)
+        return matching_words[:3]
